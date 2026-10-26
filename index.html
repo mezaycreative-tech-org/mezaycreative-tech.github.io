@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1A1F2E">
+<meta name="description" content="Happy Relationships — small daily things for your marriage and your children. From .">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Happy Relationships">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231F1B56'/%3E%3Cg%3E%3Cpath d='M18 28h10l12 44H30z' fill='%23F3A79E'/%3E%3Cpath d='M34 28h10l12 44H46z' fill='%23EE6E64'/%3E%3Cpath d='M50 28h10l12 44H62z' fill='%23EB4137'/%3E%3C/g%3E%3C/svg%3E">
+<title>Happy Relationships</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1A1F2E; --navy-2:#312C8A; --coral:#FF7A1A; --coral-mid:#FF9440;
+  --coral-tint:#FFA35C; --cream:#F7F5F0;
+  --top:env(safe-area-inset-top,0px); --bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{
+  min-height:100vh; min-height:100dvh; background:var(--navy);
+  font-family:'Poppins',sans-serif; color:#fff;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  padding:calc(var(--top) + 32px) 20px calc(var(--bottom) + 32px);
+}
+.wrap{width:100%; max-width:460px}
+
+header{text-align:center; margin-bottom:34px}
+.chevrons{display:flex; justify-content:center; gap:5px; margin-bottom:18px}
+.chevrons i{display:block; width:11px; height:34px; border-radius:1px; transform:skewX(-18deg)}
+.chevrons i:nth-child(1){background:var(--coral-tint)}
+.chevrons i:nth-child(2){background:var(--coral-mid)}
+.chevrons i:nth-child(3){background:var(--coral)}
+header h1{font-size:25px; font-weight:900; letter-spacing:-.01em}
+header .org{font-size:11px; color:var(--coral-tint); letter-spacing:.16em; text-transform:uppercase; margin-top:7px}
+header p{font-size:14px; color:rgba(255,255,255,.72); line-height:1.6; margin-top:16px}
+
+#authbox{margin-bottom:26px}
+.gbtn{width:100%;background:#fff;color:#3c4043;border:0;border-radius:15px;padding:15px;
+  font-family:'Poppins',sans-serif;font-size:15px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;min-height:52px}
+.gbtn:active{opacity:.88}
+.authnote{font-size:12px;color:rgba(255,255,255,.55);line-height:1.6;margin-top:11px;text-align:center}
+.who-line{font-size:12.5px;color:rgba(255,255,255,.7);text-align:center;margin-bottom:22px}
+.who-line b{color:var(--coral-tint);font-weight:600}
+.signout{background:none;border:0;color:rgba(255,255,255,.45);font-family:'Poppins',sans-serif;
+  font-size:12.5px;cursor:pointer;text-decoration:underline;padding:6px}
+.signout:hover{color:var(--coral-tint)}
+.err{font-size:12.5px;color:var(--coral-tint);text-align:center;margin-top:10px;min-height:16px}
+.choose{font-size:11px; color:var(--coral-tint); letter-spacing:.12em; text-transform:uppercase; margin-bottom:12px; text-align:center}
+
+.pick{
+  display:block;width:100%;text-align:left;background:rgba(255,255,255,.065);
+  border:1.5px solid rgba(255,255,255,.17);border-radius:17px;padding:18px;margin-bottom:11px;
+  color:#fff;font-family:'Poppins',sans-serif;cursor:pointer;min-height:64px;
+}
+.pick:hover{background:rgba(255,255,255,.12);border-color:var(--coral-tint)}
+.pick:active{transform:scale(.985)}
+.pick-l{display:block;font-size:17px;font-weight:700}
+.pick-s{display:block;font-size:12.5px;color:rgba(255,255,255,.6);margin-top:3px}
+.switch{
+  display:block;width:100%;background:none;border:0;color:rgba(255,255,255,.45);
+  font-family:'Poppins',sans-serif;font-size:12.5px;cursor:pointer;padding:12px;min-height:44px;
+  text-decoration:underline;margin-top:4px;
+}
+.switch:hover{color:var(--coral-tint)}
+a.card{
+  display:flex; align-items:center; gap:15px; text-decoration:none; color:inherit;
+  background:rgba(255,255,255,.065); border:1.5px solid rgba(255,255,255,.17);
+  border-radius:17px; padding:17px 18px; margin-bottom:11px;
+  transition:background .15s, border-color .15s, transform .1s;
+}
+a.card:hover{background:rgba(255,255,255,.12); border-color:var(--coral-tint)}
+a.card:active{transform:scale(.985)}
+.ico{
+  width:48px; height:48px; border-radius:14px; flex-shrink:0;
+  display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,.1);
+}
+.ico svg{width:24px; height:24px; stroke:var(--coral-tint); fill:none; stroke-width:1.7; stroke-linecap:round; stroke-linejoin:round}
+.body{flex:1; min-width:0}
+.body .who{font-size:16px; font-weight:700; line-height:1.25}
+.body .what{font-size:12.5px; color:rgba(255,255,255,.66); line-height:1.5; margin-top:3px}
+.tag{
+  display:inline-block; font-size:9.5px; font-weight:700; letter-spacing:.07em; text-transform:uppercase;
+  color:var(--navy); background:var(--coral-tint); border-radius:20px; padding:2px 8px; margin-top:7px;
+}
+.arrow{color:var(--coral); font-size:21px; flex-shrink:0; line-height:1}
+
+footer{text-align:center; margin-top:28px; font-size:11.5px; color:rgba(255,255,255,.4); line-height:1.7}
+footer a{color:var(--coral-tint); text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+@media (max-width:360px){
+  header h1{font-size:22px}
+  .ico{width:42px;height:42px}
+  .body .who{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="chevrons" aria-hidden="true"><i></i><i></i><i></i></div>
+    <h1>Happy Relationships</h1>
+    <div class="org"></div>
+    <p>Small daily things for your marriage and your children. Pick the one that's for you.</p>
+  </header>
+
+  <div id="authbox">
+    <button class="gbtn" id="googleBtn">
+      <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+    <div class="authnote">One account across Happy Wife and Happy Husband, so you can connect with your spouse if you want to. Skip it and both still work, with everything kept on your phone. Happy Children never asks you to sign in.</div>
+  </div>
+
+  <div id="signedin" style="display:none">
+    <div class="who-line">Signed in as <b id="userEmail"></b> <button class="signout" id="signoutBtn">Sign out</button></div>
+  </div>
+
+  <div id="chooser">
+    <div class="choose">Who's using this?</div>
+    <button class="pick" onclick="pickSide('m')">
+      <span class="pick-l">A man</span>
+      <span class="pick-s">Happy Wife, and Happy Children</span>
+    </button>
+    <button class="pick" onclick="pickSide('f')">
+      <span class="pick-l">A woman</span>
+      <span class="pick-s">Happy Husband, and Happy Children</span>
+    </button>
+  </div>
+
+  <div id="picked" style="display:none">
+    <div class="choose" id="pickedLabel">For you</div>
+  </div>
+
+  <a class="card" data-for="f" href="/happy-husband/">
+    <div class="ico">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </div>
+    <div class="body">
+      <div class="who">Happy Husband</div>
+      <div class="what">For women. Two small things a day for your marriage, and nothing leaves your phone.</div>
+    </div>
+    <span class="arrow" aria-hidden="true">&rsaquo;</span>
+  </a>
+
+  <a class="card" data-for="m" href="/happy-wife/">
+    <div class="ico">
+      <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/><path d="M12 21.2V5.7"/></svg>
+    </div>
+    <div class="body">
+      <div class="who">Happy Wife</div>
+      <div class="what">For men. Two small things a day for your marriage, plus date and gift ideas.</div>
+    </div>
+    <span class="arrow" aria-hidden="true">&rsaquo;</span>
+  </a>
+
+  <a class="card" data-for="both" href="/happy-children/">
+    <div class="ico">
+      <svg viewBox="0 0 24 24"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M17 13a2.4 2.4 0 1 0 0-4.8 2.4 2.4 0 0 0 0 4.8z"/><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6"/><path d="M17.5 15c2.6 0 4.5 2 4.5 4.4"/></svg>
+    </div>
+    <div class="body">
+      <div class="who">Happy Children</div>
+      <div class="what">For parents. One small thing a day with your child, and something to say.</div>
+      <span class="tag">Prototype</span>
+    </div>
+    <span class="arrow" aria-hidden="true">&rsaquo;</span>
+  </a>
+
+  <button class="switch" id="switchBtn" style="display:none" onclick="clearSide()">Not you? Start again</button>
+
+  <footer>
+     &middot; <a href="https://happyrelationships.app/">happyrelationships.app</a>
+  </footer>
+
+</div>
+<script>
+const SB_URL = 'https://ujpwrinutaweqcxgjvvr.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqcHdyaW51dGF3ZXFjeGdqdnZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NTQ5NTIsImV4cCI6MjEwNjUzMDk1Mn0.bGyogL1nmt7Qi553gPkCZ3CBXNT6gujAdpa85G2xoEc';
+
+/* Same storage key as the apps, and they all sit on this one origin,
+   so signing in here signs you into them too. */
+const sb = supabase.createClient(SB_URL, SB_KEY, {
+  auth: { persistSession:true, autoRefreshToken:true, detectSessionInUrl:true,
+          storage: window.localStorage, storageKey: 'kolishema-auth', flowType: 'implicit' }
+});
+
+function paint(session){
+  const inBox = document.getElementById('authbox');
+  const outBox = document.getElementById('signedin');
+  if(session && session.user){
+    inBox.style.display = 'none';
+    outBox.style.display = '';
+    document.getElementById('userEmail').textContent = session.user.email || 'you';
+  } else {
+    inBox.style.display = '';
+    outBox.style.display = 'none';
+  }
+}
+
+document.getElementById('googleBtn').onclick = async function(){
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if(error){
+    let e = document.querySelector('.err');
+    if(!e){ e = document.createElement('div'); e.className='err'; document.getElementById('authbox').appendChild(e); }
+    e.textContent = error.message;
+  }
+};
+
+document.getElementById('signoutBtn').onclick = async function(){
+  await sb.auth.signOut();
+  paint(null);
+};
+
+sb.auth.onAuthStateChange(function(_e, session){ paint(session); });
+sb.auth.getSession().then(function(r){ paint(r.data.session); }).catch(function(){ paint(null); });
+
+// ── who is this for ──────────────────────────────────────────
+// Remembered on this device so nobody answers it twice.
+const SIDE_KEY = 'kolishema-side';
+
+function applySide(side){
+  const chooser = document.getElementById('chooser');
+  const picked  = document.getElementById('picked');
+  const sw      = document.getElementById('switchBtn');
+  const cards   = [...document.querySelectorAll('a.card')];
+  if(!side){
+    chooser.style.display = '';
+    picked.style.display  = 'none';
+    sw.style.display      = 'none';
+    cards.forEach(c => c.style.display = 'none');
+    return;
+  }
+  chooser.style.display = 'none';
+  picked.style.display  = '';
+  sw.style.display      = '';
+  document.getElementById('pickedLabel').textContent = side === 'm' ? 'For you and your wife' : 'For you and your husband';
+  cards.forEach(c => {
+    const f = c.getAttribute('data-for');
+    c.style.display = (f === side || f === 'both') ? '' : 'none';
+  });
+}
+
+function pickSide(side){
+  try{ localStorage.setItem(SIDE_KEY, side); }catch(e){}
+  applySide(side);
+}
+function clearSide(){
+  try{ localStorage.removeItem(SIDE_KEY); }catch(e){}
+  applySide(null);
+}
+
+(function(){
+  let saved = null;
+  try{ saved = localStorage.getItem(SIDE_KEY); }catch(e){}
+  applySide(saved === 'm' || saved === 'f' ? saved : null);
+})();
+</script>
+<script>
+/* Counting opens, without knowing who.
+
+   Sign-in is optional in all three apps now, so the accounts table stopped
+   being any guide to how many people actually use them. This sends one row
+   when the app opens: which app, the date, the hour. No name, no account, no
+   device id, nothing that links today's open to tomorrow's.
+
+   Once a day per phone, decided on the phone, so the number is roughly how
+   many phones opened it that day rather than how many taps.
+
+   The key here can write to that table and cannot read it back, so nobody can
+   use it to see the numbers. If the request fails, nothing happens. */
+(function(){
+  var URL_ = 'https://ujpwrinutaweqcxgjvvr.supabase.co';
+  var KEY_ = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVqcHdyaW51dGF3ZXFjeGdqdnZyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTA5NTQ5NTIsImV4cCI6MjEwNjUzMDk1Mn0.bGyogL1nmt7Qi553gPkCZ3CBXNT6gujAdpa85G2xoEc';
+  var APP  = 'landing';
+  var MARK = 'ko-seen-' + APP;   // one marker per app: all four share an origin,
+                                 // so a single key meant only the first app
+                                 // opened each day was ever counted
+  function today(){ return new Date().toISOString().slice(0, 10); }
+  function alreadyToday(){ try { return localStorage.getItem(MARK) === today(); } catch (e) { return true; } }
+  function markToday(){ try { localStorage.setItem(MARK, today()); } catch (e) {} }
+  function count(){
+    if (alreadyToday()) return;
+    markToday();
+    try {
+      fetch(URL_ + '/rest/v1/app_opens', {
+        method: 'POST',
+        headers: { apikey: KEY_, Authorization: 'Bearer ' + KEY_,
+                   'Content-Type': 'application/json', Prefer: 'return=minimal' },
+        body: JSON.stringify({ app: APP }), keepalive: true
+      }).catch(function(){});
+    } catch (e) {}
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(count, 2500); });
+  else setTimeout(count, 2500);
+})();
+</script>
+</body>
+</html>
