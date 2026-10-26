@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Wife</title>
+<style>
+  html,body{margin:0;height:100%;background:#1A1F2E;color:#fff;
+    font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    display:flex;align-items:center;justify-content:center;text-align:center;padding:24px}
+  p{font-size:15px;line-height:1.6;opacity:.75;margin:0}
+  a{color:#FFA35C}
+</style>
+</head>
+<body>
+<p>Taking you to the app&hellip;<br><br>
+<a id="manual" href="https://happyrelationships.app/happy-wife/">happyrelationships.app/happy-wife</a></p>
+<script>
+/* The old address, kept alive.
+
+   The repo was renamed from happy-wife-app to happy-wife when the apps moved
+   to their own domain, which 404'd every link already sent out. This page
+   sits at the old path and forwards to the new one.
+
+   It also carries the person's data across. Habits, streak and notes are kept
+   in localStorage, which belongs to one origin — so somebody arriving at the
+   new domain would otherwise find an empty app. This page can read the old
+   origin's storage, so it hands it over in the URL fragment and the new page
+   imports anything it does not already have. A fragment is never sent to the
+   server; it stays in the browser.
+
+   Anyone who already started fresh on the new domain keeps what they have:
+   the import never overwrites an existing key. */
+(function(){
+  var TO = 'https://happyrelationships.app/happy-wife/';
+  var payload = '';
+  try {
+    var data = {};
+    for (var i = 0; i < localStorage.length; i++) {
+      var k = localStorage.key(i);
+      if (!k) continue;
+      if (!/^(hw-|hm-|hc-|hh-|ko-|kolishema-)/.test(k)) continue;
+      data[k] = localStorage.getItem(k);
+    }
+    if (Object.keys(data).length) {
+      payload = '#carry=' + encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify(data)))));
+    }
+  } catch (e) {}
+  location.replace(TO + payload);
+})();
+</script>
+</body>
+</html>
